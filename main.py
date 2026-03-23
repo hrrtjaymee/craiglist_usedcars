@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
+'''
 ## INITIAL VIEW ON DATA ##
 path = os.getcwd()
 data = pd.read_csv(f'{path}/../used_cars_craiglist.csv', nrows = 100)
@@ -18,4 +19,5 @@ data = pd.read_csv(f'{path}/../used_cars_craiglist.csv', nrows = 100)
 ## [result-posted-date] = how recent the posting was (in hrs based on when the data was retrieved)
 ## [location] = location (contains incorrect values)
 ## [priceinfo] = selling price (in US dollars)
+'''
 
