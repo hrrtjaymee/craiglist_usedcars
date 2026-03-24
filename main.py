@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import os
+from src.extract import get_data
 
 '''
 ## INITIAL VIEW ON DATA ##
@@ -21,3 +21,7 @@ data = pd.read_csv(f'{path}/../used_cars_craiglist.csv', nrows = 100)
 ## [priceinfo] = selling price (in US dollars)
 '''
 
+def main():
+    ##hore: add db connection function
+    BATCHSIZE = 100
+    data = get_data(BATCHSIZE)
