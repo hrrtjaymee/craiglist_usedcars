@@ -1,24 +1,10 @@
 import pandas as pd
-from pathlib import Path
-
-'''
-COLUMN ORDER:
-posting_link
-image_link
-label
-mileage
-meta
-location
-price
-'''
-
-ROOT = Path(__file__).resolve().parents[3]
-FILENAME = '/used_cars_craiglist.csv'
-COLUMNS = ['posting_link', 'image_link', 'label', 'mileage', 'meta', 'location', 'price']
+from settings import COLUMN_NAMES, ROOT, FILENAME
 
 def get_data(chunksize = 100):
     try:
-        data = pd.read_csv(f'{ROOT}{FILENAME}', names=COLUMNS, header=None, chunksize=chunksize)
+        data = pd.read_csv(f'{ROOT}{FILENAME}', names=COLUMN_NAMES, header=None, chunksize=chunksize)
+        print('Successfully retrieved data')
     except FileNotFoundError:
         print(f'Error: The file {FILENAME} was not found in path {ROOT}')
     except Exception as e:
