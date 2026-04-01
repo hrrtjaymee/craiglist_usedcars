@@ -20,6 +20,7 @@ CAR_MODELS = {'chevrolet', 'ford', 'honda', 'acura', 'gmc',
 def clean_batch(data: pd.DataFrame):
     data.drop_duplicates(inplace=True)
     clean_title(data)
+    clean_mileage(data)
 
     final_data = data
     return final_data
@@ -43,4 +44,17 @@ def clean_title(data: pd.DataFrame):
 
     data.drop(['year_raw', 'label'], axis=1, inplace = True)
 
+def clean_mileage(data: pd.DataFrame):
+    data['mileage'] = data['mileage'].str.extract(r'([\d]+k)', flags=re.IGNORECASE) ##removes comma and ml, returns num(k)
+
+    data['mileage'] = data['mileage'].apply(normalize_values)
+    
+def normalize_values(mileage: str):
+    if pd.isna(mileage):
+        return None
+    if 'k' in mileage:
+        mileage = mileage.replace('k', '')
+        mileage = int(mileage) * 1000
+        return mileage
+    return int(mileage)
 
