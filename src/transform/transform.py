@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 
 #add data to database by batch (100 rows per batch)
-##rename columns /
+##rename columns 
 #clean data
 
 #separate model year and car model in label column
@@ -15,12 +15,13 @@ CAR_MODELS = {'chevrolet', 'ford', 'honda', 'acura', 'gmc',
             'toyota', 'mercedes', 'subaru', 'nissan', 'chrysler',
             'hyundai', 'corvette', 'volkswagen', 'mazda', 'land rover',
             'audi', 'kia', 'dodge', 'tesla','bmw', 'jeep',
-            'lexus', 'porsche', 'austin', 'chevy'}
-#todo: clean titles so that the capitalization is uniform & chevy == chevrolet
+            'lexus', 'porsche', 'austin', 'chevy', 'cadillac'}
+
 def clean_batch(data: pd.DataFrame):
+    data.drop_duplicates(inplace=True)
     clean_title(data)
 
-    final_data = data[['year', 'make', 'model']]
+    final_data = data
     return final_data
 
 def clean_title(data: pd.DataFrame):
@@ -32,8 +33,14 @@ def clean_title(data: pd.DataFrame):
 
     pattern = '|'.join(CAR_MODELS)
     data['make'] = data['label'].str.extract(f'({pattern})', flags=re.IGNORECASE) #extracting make
+    data['make'] = data['make'].str.replace('chevy', repl='Chevrolet', case=False)
+    data['make'] = data['make'].str.upper()
+
     data['model'] = data['label'].str.replace(pattern, repl='', case=False, regex=True) #removing the make from the model
     data['model'] = data['label'].str.replace(r'\b(\d{4})\b', '', case=False, regex=True) #removing the year from the model
 
+    data['needs_reviewing'] = (data['make'].isna()) | (data['year'].isna())
+
+    data.drop(['year_raw', 'label'], axis=1, inplace = True)
 
 
